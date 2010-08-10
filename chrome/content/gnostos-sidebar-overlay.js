@@ -37,7 +37,9 @@ gnostos.onMessagePaneLoad = function()
 
 	if(gnostosSideBar)
 	{		
-		gnostosSideBar.contentDocument.innerHTML += "Hello";
+		var childNode = gnostosSideBar.contentDocument.documentElement;
+		gDebugger.log(childNode.innerHTML);
+		childNode.innerHTML = "<head><title>Hello</title></head><body>World!</body>"
 	}
 }
 
