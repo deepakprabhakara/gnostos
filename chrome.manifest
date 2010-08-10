@@ -1,0 +1,6 @@
+content   gnostos                 chrome/content/
+skin      gnostos   classic/1.0   chrome/skin/
+locale    gnostos   en-US         chrome/locale/en-US/
+
+
+overlay  chrome://messenger/content/mailWindowOverlay.xul   chrome://gnostos/content/gnostos-sidebar-overlay.xul

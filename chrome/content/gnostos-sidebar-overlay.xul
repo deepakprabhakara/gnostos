@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<overlay id="gnostossidebaroverlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<script type="application/x-javascript" src="chrome://gnostos/content/constants.js"/>
+	<script type="application/x-javascript" src="chrome://gnostos/content/debugger.js"/>
+	<script type="application/x-javascript" src="chrome://gnostos/content/gnostos-sidebar-overlay.js"/>
+
+    <hbox id="messagepanewrapper">
+		<splitter id="gnostossidebarsplitter"
+              insertafter="messagepane"
+              hidden="false"
+			  collapse="after">
+			  <grippy/>
+		</splitter>
+
+		<browser id="gnostossidebar"
+		         context="mailContext"
+		         autofind="false"
+				 disablehistory="true"
+				 type="content-primary"
+				 src="about:blank"
+				 onresize="return gnostos.onMessagePaneResize(event);"
+				 disablesecurity="true"
+				 onclick="return gnostos.onContentAreaClick(event);"
+				 insertafter="gnostossidebarsplitter">
+		</browser>
+	</hbox>
+</overlay>
