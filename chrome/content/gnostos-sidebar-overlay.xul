@@ -14,16 +14,13 @@
 			  <grippy/>
 		</splitter>
 
-		<browser id="gnostossidebar"
-		         context="mailContext"
-		         autofind="false"
-				 disablehistory="true"
-				 type="content-primary"
-				 src="about:blank"
-				 onresize="return gnostos.onMessagePaneResize(event);"
-				 disablesecurity="true"
-				 onclick="return gnostos.onContentAreaClick(event);"
-				 insertafter="gnostossidebarsplitter">
-		</browser>
+		<div class="iframe">
+			<iframe name="gnostossidebar"
+		        	id="gnostossidebar"
+		    	    src="about:blank"
+			        frameborder="0"
+					insertafter="gnostossidebarsplitter">
+			</iframe>
+		</div>
 	</hbox>
 </overlay>

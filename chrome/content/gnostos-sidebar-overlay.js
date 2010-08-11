@@ -1,4 +1,9 @@
-var gnostos = { }
+var gnostos = { 
+	mSideBar: null,
+	mDocumentElement: null,
+	mEmailAddress: null,
+	mDisplayName: null,
+}
 
 gnostos.onMessagePaneLoad = function()
 {
@@ -6,20 +11,18 @@ gnostos.onMessagePaneLoad = function()
 	var emailAddresses = expandedfromBox.emailAddresses;
 	var firstChild = emailAddresses.firstChild;
 	
-	var emailAddress = null;
 	if(firstChild)
-		emailAddress = firstChild.getAttribute("emailAddress");
+		gnostos.mEmailAddress = firstChild.getAttribute("emailAddress");
 
-	var displayName = null;
 	if(firstChild)
-		displayName = firstChild.getAttribute("displayName");
+		gnostos.mDisplayName = firstChild.getAttribute("displayName");
 	
-	gDebugger.log("emailAddress=" + emailAddress);
-	gDebugger.log("displayName=" + displayName);
+	gDebugger.log("emailAddress=" + gnostos.mEmailAddress);
+	gDebugger.log("displayName=" + gnostos.mDisplayName);
 
-	var gnostosSideBar = document.getElementById (gConstants.gnostosSideBarId);
-	gnostosSideBar.width = gConstants.sidebarWidth;
-	gnostosSideBar.maxwidth = window.innerWidth / 4;
+	gnostos.mSideBar = document.getElementById (gConstants.gnostosSideBarId);
+	gnostos.mSideBar.width = gConstants.sidebarWidth;
+	gnostos.mSideBar.maxwidth = window.innerWidth / 4;
 
 	var gnostosSidebarSplitter = document.getElementById (gConstants.gnostosSideBarSplitterId);
 
@@ -27,30 +30,70 @@ gnostos.onMessagePaneLoad = function()
 	if(msgHeaderView.collapsed == true)
 	{
 		gnostosSidebarSplitter.collapsed = true;
-		gnostosSideBar.collapsed = true;
+		gnostos.mSideBar.collapsed = true;
 	}
 	else
 	{
-		gnostosSideBar.collapsed = false;
+		gnostos.mSideBar.collapsed = false;
 		gnostosSidebarSplitter.collapsed = false;
 	}
 
-	if(gnostosSideBar)
+	if(gnostos.mSideBar)
 	{		
-		var childNode = gnostosSideBar.contentDocument.documentElement;
-		gDebugger.log(childNode.innerHTML);
-		childNode.innerHTML = "<head><title>Hello</title></head><body>World!</body>"
+		gnostos.mDocumentElement = gnostos.mSideBar.contentDocument.documentElement;
+		gnostos.mDocumentElement.innerHTML = "<head><title></title></head><body>Loading</body>";
+		gDebugger.log(gnostos.mDocumentElement.innerHTML);
+		if (window.XMLHttpRequest)
+		{
+			var xmlhttp=new XMLHttpRequest();
+			xmlhttp.open("GET","http://friendfeed.com/api/feed/user?emails="+gnostos.mEmailAddress+"&format=xml&num=2",true);
+			xmlhttp.onprogress = gnostos.onXHRProgress;
+			xmlhttp.onload = gnostos.onXHRLoad;
+			xmlhttp.onerror = gnostos.onXHRError;
+			xmlhttp.onreadystatechange = gnostos.onXHRReadyStateChange;
+			xmlhttp.send();
+		}
+		//gnostosSideBar.setAttribute('src', "http://friendfeed.com/api/feed/user?emails="+emailAddress+"&format=xml&num=2");
 	}
 }
 
-gnostos.onMessagePaneResize = function(aEvent)
+gnostos.onXHRProgress = function(e)
 {
-	var gnostosSideBar = document.getElementById (gConstants.gnostosSideBarId);
-	gnostosSideBar.maxwidth = window.innerWidth / 4;
+	var percentComplete = (e.position / e.totalSize)*100;
+	gDebugger.log("Progress: " + percentComplete);
+	if(percentComplete / 33 == 1)
+		gnostos.mDocumentElement.innerHTML = "<head><title></title></head><body>Loading.</body>";
+	else if(percentComplete / 33 == 2)
+		gnostos.mDocumentElement.innerHTML = "<head><title></title></head><body>Loading..</body>";
+	else if(percentComplete / 33 == 3)
+		gnostos.mDocumentElement.innerHTML = "<head><title></title></head><body>Loading...</body>";
 }
 
-gnostos.onContentAreaClick = function(aEvent)
-{	
+gnostos.onXHRLoad = function(e)
+{
+	 gDebugger.log(this.responseText);
+	 gnostos.mDocumentElement.innerHTML = "<head><title></title></head><body>";
+	 //gDebugger.log(this.responseXML);
+	 var xmlDoc = this.responseXML;
+	 var titleElements = xmlDoc.getElementsByTagName("title");
+	 
+	 for(var i = 0; i < titleElements.length; ++i)
+		 gnostos.mDocumentElement.innerHTML += titleElements[i].childNodes[0].nodeValue;
+	 
+	 gnostos.mDocumentElement.innerHTML += "</body>";
+	 gDebugger.log(gnostos.mDocumentElement.innerHTML);
+}
+
+gnostos.onXHRError = function(e)
+{
+	gDebugger.log("XHR ERROR!! " + e.target.status);
+}
+
+gnostos.onReadyStateChange = function()
+{
+	gDebugger.log(this.readyState);
+	 if(this.readyState == 4) {
+	 }
 }
 
 var messagepane = document.getElementById("messagepane");
