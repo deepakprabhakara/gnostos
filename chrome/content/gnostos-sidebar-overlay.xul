@@ -17,7 +17,10 @@
 		<div class="iframe">
 			<iframe name="gnostossidebar"
 		        	id="gnostossidebar"
+		        	type="content"
 		    	    src="about:blank"
+		    	    width="200"
+		    	    scrolling="no"
 			        frameborder="0"
 					insertafter="gnostossidebarsplitter">
 			</iframe>
