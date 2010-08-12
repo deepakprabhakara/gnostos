@@ -5,8 +5,8 @@ var gnostos = {
 	//mSideBarDocumentHead: null,
 	//mSideBarDocumentBody: null,
 	mEmailAddress: null,
-	mDisplayName: null,
-}
+	mDisplayName: null
+};
 
 gnostos.onMessagePaneLoad = function()
 {
@@ -46,7 +46,7 @@ gnostos.onMessagePaneLoad = function()
 		//gnostos.mSideBar.setAttribute('src', "http://localhost/user?emails="+emailAddress+"&format=xml");
 		gnostos.mSideBar.setAttribute('src', "file://localhost/C:/Deepak/Desktop/new.html");
 	}
-}
+};
 
 var messagepane = document.getElementById("messagepane");
 messagepane.addEventListener("load", gnostos.onMessagePaneLoad, true);
