@@ -5,7 +5,7 @@ var sys = require("sys"),
     url = require('url'),
     events = require("events");
 
-function load_static_file(uri, response) {
+function load_static_file(uri, response, emailid, username) {
 	var filename = path.join(process.cwd(), uri);
 	path.exists(filename, function(exists) {
 		if(!exists) {
@@ -22,9 +22,22 @@ function load_static_file(uri, response) {
 				response.close();
 				return;
 			}
+
+			sys.puts("readFile: "+ file);
+			var index = file.indexOf("// INSERT EMAILID/USERNAME HERE");
+			sys.puts("readFile: "+ index);
+			var part1 = file.substring(0, index);
+			sys.puts("readFile:" + part1);
+			sys.puts("var emailid='"+emailid+"';");
+			sys.puts("var username='"+username+"';");			
+			var part2 = file.substring(index + "// INSERT EMAILID/USERNAME HERE".length);
+			sys.puts("readFile:" + part2);
 			
 			response.sendHeader(200);
-			response.write(file, "binary");
+			response.write(part1, "binary");
+			response.write("var emailid='"+emailid+"';", "binary");
+			response.write("var username='"+username+"';", "binary");
+			response.write(part2, "binary");
 			response.close();
 		});
 	});
@@ -57,11 +70,15 @@ function get_friendfeed(email, name) {
 http.createServer(function(request, response) {
 	sys.puts(request.url);
     var uri = url.parse(request.url).pathname;
-    if(uri === "/stream") {
+    if(uri === "/stream")
+    {
 		var requrlparsed = url.parse(request.url, true);
-		sys.puts(requrlparsed.query.email);
-		sys.puts(requrlparsed.query.name);
-	    
+		var emailid = requrlparsed.query.email;
+		var username = requrlparsed.query.name;
+		
+		sys.puts("stream: "+ emailid);
+		sys.puts("stream: "+ username);
+		
 		var friendfeed_listener = function(friendfeed) 
 		{
 			sys.puts(friendfeed);
@@ -84,8 +101,19 @@ http.createServer(function(request, response) {
 	    
 		get_friendfeed(requrlparsed.query.email, requrlparsed.query.name);
     }
-   else {
-    	load_static_file(uri, response);
+    else if(uri === "/friendfeed_streamer.html")
+    {
+		var requrlparsed = url.parse(request.url, true);
+		var emailid = requrlparsed.query.email;
+		var username = requrlparsed.query.name;
+		
+		if(!username)
+			username = "";
+				
+		sys.puts("friendfeed_streamer: "+ emailid);
+		sys.puts("friendfeed_streamer: "+ username);
+    	
+    	load_static_file(uri, response, emailid, username);
     }  
 }).listen(8080);
 

@@ -51,7 +51,7 @@ gnostos.onMessagePaneLoad = function()
 	{
 		gDebugger.log("friendfeed_streamer.html");
 		//gnostos.mSideBar.setAttribute('src', "http://localhost/user?emails="+emailAddress+"&format=xml");
-		gnostos.mSideBar.setAttribute('src', "http://localhost:8080/friendfeed_streamer.html");
+		gnostos.mSideBar.setAttribute('src', "http://localhost:8080/friendfeed_streamer.html?email="+gnostos.mEmailAddress+"&name="+gnostos.mDisplayName);
 	}
 };
 
