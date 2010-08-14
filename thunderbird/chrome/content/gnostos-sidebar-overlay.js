@@ -27,6 +27,12 @@ gnostos.onMessagePaneLoad = function()
 	gnostos.mSideBar.width = gConstants.sidebarWidth;
 	gnostos.mSideBar.maxwidth = window.innerWidth / 4;
 
+	if(gnostos.mSideBar && gnostos.mSideBar.collapsed == false)
+	{
+		gDebugger.log("about:blank");
+		gnostos.mSideBar.setAttribute('src', "about:blank");
+	}
+	
 	var gnostosSidebarSplitter = document.getElementById (gConstants.gnostosSideBarSplitterId);
 
 	var msgHeaderView = document.getElementById('msgHeaderView');
@@ -43,8 +49,9 @@ gnostos.onMessagePaneLoad = function()
 
 	if(gnostos.mSideBar && gnostos.mSideBar.collapsed == false)
 	{
+		gDebugger.log("friendfeed_streamer.html");
 		//gnostos.mSideBar.setAttribute('src', "http://localhost/user?emails="+emailAddress+"&format=xml");
-		gnostos.mSideBar.setAttribute('src', "http://localhost:8080/user?email="+gnostos.mEmailAddress+"&name="+gnostos.mDisplayName);
+		gnostos.mSideBar.setAttribute('src', "http://localhost:8080/friendfeed_streamer.html");
 	}
 };
 

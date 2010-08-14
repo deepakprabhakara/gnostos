@@ -34,7 +34,7 @@ var friendfeed_emitter = new events.EventEmitter();
 
 function get_friendfeed(email, name) {
 	var friendfeed_client = http.createClient(80, "friendfeed.com");	
-	var request = friendfeed_client.request("GET", "/api/feed/user?emails="+email+"&format=json&num=2", {"host": "friendfeed.com"});
+	var request = friendfeed_client.request("GET", "/api/feed/user?emails="+email+"&format=xml&num=2", {"host": "friendfeed.com"});
 	
 	request.addListener("response", function(response) {
 		var body = "";
@@ -43,7 +43,8 @@ function get_friendfeed(email, name) {
 		});
 		
 		response.addListener("end", function() {
-			var friendfeed = JSON.parse(body);
+			var friendfeed = body;
+			sys.puts(friendfeed);
 			if(friendfeed.length > 0) {
 				friendfeed_emitter.emit("friendfeed", friendfeed);
 			}
@@ -63,8 +64,9 @@ http.createServer(function(request, response) {
 	    
 		var friendfeed_listener = function(friendfeed) 
 		{
-			response.sendHeader(200, { "Content-Type" : "text/plain" });
-			response.write(JSON.stringify(friendfeed));
+			sys.puts(friendfeed);
+			response.sendHeader(200, { "Content-Type" : "text/xml" });
+			response.write(friendfeed);
 			response.close();
 			
 			clearTimeout(timeout);
@@ -83,7 +85,7 @@ http.createServer(function(request, response) {
 		get_friendfeed(requrlparsed.query.email, requrlparsed.query.name);
     }
    else {
-    	load_static_file("friendfeed_streamer.html", response);
+    	load_static_file(uri, response);
     }  
 }).listen(8080);
 

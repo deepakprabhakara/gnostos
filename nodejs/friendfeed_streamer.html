@@ -2,22 +2,54 @@
 <html>
 	<head>
 		<title>Gnostos</title>
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 	</head>
 	<body>
-		<ul id="tweets"></ul>
+		<li onmousedown="togglevisibility('friendfeed')">Twitter</li>
+		<ul id="friendfeed"></ul>
 		<script type="text/javascript">
-		var tweet_list = $("#tweets");
-		
-		function load_tweets() {
-			$.getJSON("/stream?email=deepak.prabhakara@gmail.com", function(tweets) {
-				$.each(tweets, function() {
-					$("<li>").html(this.text).prependTo(tweet_list);
-				});
-				load_tweets();
-			});
+
+		function togglevisibility(obj) {
+			var el = document.getElementById(obj);
+			if ( el.style.display != 'none' ) {
+				el.style.display = 'none';
+			}
+			else {
+				el.style.display = '';
+			}
 		}
-		
+				
+		function load_tweets() {
+			//alert("Hi");
+			 if (window.XMLHttpRequest)
+			 {
+				 var xmlhttp=new XMLHttpRequest();
+				 xmlhttp.open("GET","/stream?email=deepak.prabhakara@gmail.com",true);
+				 //xmlhttp.onprogress = onXHRProgress;
+				 xmlhttp.onload = onXHRLoad;
+				 xmlhttp.onerror = onXHRError;
+				 //xmlhttp.onreadystatechange = gnostos.onXHRReadyStateChange;
+				 xmlhttp.send();
+			 }
+		}
+
+		function onXHRLoad(e)
+		{
+		    var friendfeed_ul = document.getElementById('friendfeed');
+		    var xmlDoc = this.responseXML;
+		    var titleElements = xmlDoc.getElementsByTagName("title");
+		   		   
+			var feed = "";
+		    for(var i = 0; i < titleElements.length; ++i)
+		    {
+		        feed += "<li>" + titleElements[i].childNodes[0].nodeValue + "</li>";
+		    }
+		    friendfeed_ul.innerHTML = feed;		   
+		}
+
+		function onXHRError(e)
+		{
+		}
+				
 		setTimeout(load_tweets, 1000);
 		</script>
 	</body>
