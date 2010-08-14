@@ -41,10 +41,10 @@ gnostos.onMessagePaneLoad = function()
 		gnostosSidebarSplitter.collapsed = false;
 	}
 
-	if(gnostos.mSideBar)
+	if(gnostos.mSideBar && gnostos.mSideBar.collapsed == false)
 	{
 		//gnostos.mSideBar.setAttribute('src', "http://localhost/user?emails="+emailAddress+"&format=xml");
-		gnostos.mSideBar.setAttribute('src', "file://localhost/C:/Deepak/Desktop/new.html");
+		gnostos.mSideBar.setAttribute('src', "http://localhost:8080/user?email="+gnostos.mEmailAddress+"&name="+gnostos.mDisplayName);
 	}
 };
 
