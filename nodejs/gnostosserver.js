@@ -1,13 +1,40 @@
 var sys = require("sys"),
     http = require("http"),
+    path = require("path"),
+    fs = require("fs"),
+    url = require('url'),
     events = require("events");
 
-var friendfeed_client = http.createClient(80, "friendfeed.com");
-	
+function load_static_file(uri, response) {
+	var filename = path.join(process.cwd(), uri);
+	path.exists(filename, function(exists) {
+		if(!exists) {
+			response.sendHeader(404, {"Content-Type": "text/plain"});
+			response.write("404 Not Found\n");
+			response.close();
+			return;
+		}
+		
+		fs.readFile(filename, "binary", function(err, file) {
+			if(err) {
+				response.sendHeader(500, {"Content-Type": "text/plain"});
+				response.write(err + "\n");
+				response.close();
+				return;
+			}
+			
+			response.sendHeader(200);
+			response.write(file, "binary");
+			response.close();
+		});
+	});
+}
+
 var friendfeed_emitter = new events.EventEmitter();
 
 function get_friendfeed(email, name) {
-	var request = friendfeed_client.request("GET", "/api/feed/user?emails="+email+"&format=xml&num=2", {"host": "friendfeed.com"});
+	var friendfeed_client = http.createClient(80, "friendfeed.com");	
+	var request = friendfeed_client.request("GET", "/api/feed/user?emails="+email+"&format=json&num=2", {"host": "friendfeed.com"});
 	
 	request.addListener("response", function(response) {
 		var body = "";
@@ -16,7 +43,7 @@ function get_friendfeed(email, name) {
 		});
 		
 		response.addListener("end", function() {
-			var friendfeed = body;
+			var friendfeed = JSON.parse(body);
 			if(friendfeed.length > 0) {
 				friendfeed_emitter.emit("friendfeed", friendfeed);
 			}
@@ -28,28 +55,36 @@ function get_friendfeed(email, name) {
 
 http.createServer(function(request, response) {
 	sys.puts(request.url);
-	var requrlparsed = require('url').parse(request.url, true);
-	sys.puts(requrlparsed.query.email);
-	sys.puts(requrlparsed.query.name);
-    
-	var listener = friendfeed_emitter.addListener("friendfeed", function(friendfeed) {
-		response.sendHeader(200, { "Content-Type" : "text/plain" });
-		response.write(friendfeed);
-		response.close();
+    var uri = url.parse(request.url).pathname;
+    if(uri === "/stream") {
+		var requrlparsed = url.parse(request.url, true);
+		sys.puts(requrlparsed.query.email);
+		sys.puts(requrlparsed.query.name);
+	    
+		var friendfeed_listener = function(friendfeed) 
+		{
+			response.sendHeader(200, { "Content-Type" : "text/plain" });
+			response.write(JSON.stringify(friendfeed));
+			response.close();
+			
+			clearTimeout(timeout);
+		}; 
 		
-		clearTimeout(timeout);
-	});
-	
-	var timeout = setTimeout(function() {
-		response.sendHeader(200, { "Content-Type" : "text/plain" });
-		response.write("No data found");
-		response.close();
+		friendfeed_emitter.addListener("friendfeed", friendfeed_listener);
 		
-		tweet_emitter.removeListener(listener);
-	}, 10000);
-    
-	get_friendfeed(requrlparsed.query.email, requrlparsed.query.name);
-	
+		var timeout = setTimeout(function() {
+			response.sendHeader(200, { "Content-Type" : "text/plain" });
+			response.write("No data found");
+			response.close();
+			
+			friendfeed_emitter.removeListener("friendfeed", friendfeed_listener);
+		}, 10000);
+	    
+		get_friendfeed(requrlparsed.query.email, requrlparsed.query.name);
+    }
+   else {
+    	load_static_file("friendfeed_streamer.html", response);
+    }  
 }).listen(8080);
 
 sys.puts("Server running at http://localhost:8080/");
