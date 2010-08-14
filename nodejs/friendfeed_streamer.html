@@ -7,8 +7,9 @@
 		</script>
 	</head>
 	<body>
-		<li onmousedown="togglevisibility('friendfeed')">Twitter</li>
-		<ul id="friendfeed"></ul>
+		<img id="profileimage"/>
+		<li id="twittertitle" onmousedown="togglevisibility('twitterfeed')"></li>
+		<div id="twitterfeed"></div>
 		<script type="text/javascript">
 
 		function togglevisibility(obj) {
@@ -22,38 +23,46 @@
 		}
 				
 		function load_tweets() {
-			//alert("Hi");
-			 if (window.XMLHttpRequest)
-			 {
-				 var xmlhttp=new XMLHttpRequest();
-				 xmlhttp.open("GET","/stream?email="+emailid+"&user="+username,true);
-				 //xmlhttp.onprogress = onXHRProgress;
-				 xmlhttp.onload = onXHRLoad;
-				 xmlhttp.onerror = onXHRError;
-				 //xmlhttp.onreadystatechange = gnostos.onXHRReadyStateChange;
-				 xmlhttp.send();
-			 }
+			var twittertitle = document.getElementById('twittertitle');
+			twittertitle.innerHTML = "Looking up " + emailid + "...";
+			if (window.XMLHttpRequest)
+			{
+				var xmlhttp=new XMLHttpRequest();
+				xmlhttp.open("GET","/stream?email="+emailid+"&user="+username,true);
+				//xmlhttp.onprogress = onXHRProgress;
+				xmlhttp.onload = onXHRLoad;
+				xmlhttp.onerror = onXHRError;
+				//xmlhttp.onreadystatechange = gnostos.onXHRReadyStateChange;
+				xmlhttp.send();
+			}
 		}
 
 		function onXHRLoad(e)
 		{
-		    var friendfeed_ul = document.getElementById('friendfeed');
+		    var twitterfeed = document.getElementById('twitterfeed');
+		    var profileimage = document.getElementById('profileimage');
+		    var twittertitle = document.getElementById('twittertitle');
+		    
 		    var xmlDoc = this.responseXML;
 		    var titleElements = xmlDoc.getElementsByTagName("title");
+		    var nicknameElements = xmlDoc.getElementsByTagName("nickname");
 		   		   
 			var feed = "";
 		    for(var i = 0; i < titleElements.length; ++i)
 		    {
 		        feed += "<li>" + titleElements[i].childNodes[0].nodeValue + "</li>";
 		    }
-		    friendfeed_ul.innerHTML = feed;		   
+		    profileimage.setAttribute("src", "http://friendfeed-api.com/v2/picture/" + nicknameElements[0].childNodes[0].nodeValue + "?size=medium");
+		    twittertitle.innerHTML = "Twitter";
+		    twitterfeed.innerHTML = feed;
 		}
 
 		function onXHRError(e)
 		{
 		}
 				
-		setTimeout(load_tweets, 1000);
+		//setTimeout(load_tweets, 1000);
+		load_tweets();
 		</script>
 	</body>
 </html>

@@ -75,6 +75,9 @@ http.createServer(function(request, response) {
 		var requrlparsed = url.parse(request.url, true);
 		var emailid = requrlparsed.query.email;
 		var username = requrlparsed.query.name;
+
+		if(!username)
+			username = "";
 		
 		sys.puts("stream: "+ emailid);
 		sys.puts("stream: "+ username);
