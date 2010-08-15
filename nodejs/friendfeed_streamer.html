@@ -27,7 +27,8 @@
 			.accountemail
 			{
 				font-family: arial,sans-serif;
-				font-size:14px;
+				font-size:13px;
+				padding: 4px;
 			}
 			.feedtitle
 			{
@@ -80,6 +81,8 @@
 				
 		function load_tweets() {
 			var twittertitle = document.getElementById('twittertitle');
+			var twitterfeed = document.getElementById('twitterfeed');
+			twitterfeed.style.display = 'none';
 			var profileimage = document.getElementById('profileimage');
 			profileimage.style.display = 'none';
 			
@@ -119,8 +122,14 @@
 		    			    
 		    var titleElements = xmlDoc.getElementsByTagName("title");
 		    var nicknameElements = xmlDoc.getElementsByTagName("nickname");
-		    var nameElements = xmlDoc.getElementsByTagName("name");
-		   		   
+		    //var nameElements = xmlDoc.getElementsByTagName("name");
+			if(nicknameElements[0] == null)
+			{
+				profileimage.style.display = 'none';
+		    	twittertitle.innerHTML = "Contact is not registered on FriendFeed!";
+		    	return;
+			}
+				
 			var feed = "";
 		    for(var i = 0; i < titleElements.length; ++i)
 		    {
@@ -129,7 +138,11 @@
 		    //http://api.twitter.com/1/users/profile_image/deepakprab
 		    if(nicknameElements[0] && nicknameElements[0].childNodes[0].nodeValue)
 		    	profileimage.setAttribute("src", "http://friendfeed-api.com/v2/picture/" + nicknameElements[0].childNodes[0].nodeValue + "?size=large");
-		    accountname.innerHTML = username;//nameElements[0].childNodes[0].nodeValue;
+
+			var twitterfeed = document.getElementById('twitterfeed');
+			twitterfeed.style.display = '';
+	    	
+		    accountname.innerHTML = username;
 		    accountemail.innerHTML = emailid;
 		    twittertitle.innerHTML = "Twitter";
 		    twitterfeed.innerHTML = feed;
