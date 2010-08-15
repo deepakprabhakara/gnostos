@@ -6,75 +6,83 @@
 		<style type="text/css">
 			body
 			{
-				position:absolute;
-				width:200px;
-				overflow-x:hidden;
-				overflow-y:auto;
-				border:0;
-				word-wrap: break-word;	
-				background-color:#ffffff;
+				position:			absolute;
+				width:				200px;
+				overflow-x:			hidden;
+				overflow-y:			auto;
+				border:				0;
+				word-wrap:			break-word;	
+				background-color:	#ffffff;
 			}
 			.profileimage
 			{
-				padding: 0px;
-				vertical-align:middle;
+				padding:			0px;
+				vertical-align:		middle;
 			}
 			.accountname
 			{
-				position:absolute;
-				width:125px;
-				overflow-x:hidden;
-				overflow-y:auto;			
-				font-family: roman;
-				font-size: 16px;
-				font-weight: bold;
+				position:			absolute;
+				width:				125px;
+				overflow-x:			hidden;
+				overflow-y:			auto;
+				font-family:		roman;
+				font-size:			16px;
+				font-weight:		bold;
 			}
 			.accountemail
 			{
-				font-family: roman;
-				font-size:12px;
-				padding-bottom:2px;
-				vertical-align:text-top;
+				font-family:		roman;
+				font-size:			12px;
+				padding-bottom:		2px;
+				vertical-align:		text-top;
 			}
 			.infodialog
 			{
-				background: #aa0000;			
-				font-family: roman;
-				font-size:14px;
-				color:#ffffff;
-				padding: 5px;
-				word-wrap: break-word;
+				background:			#aa0000;
+				font-family:		roman;
+				font-size:			14px;
+				color:				#ffffff;
+				padding:			5px;
+				word-wrap:			break-word;
 			}
 			.feedtitle
 			{
-				background: #aa0000;			
-				font-family: roman;
-				font-size:14px;
-				font-weight: bold;
-				color:#ffffff;
-				padding: 5px;
-				width:200px;
-				word-wrap: break-word;
+				background:			#aa0000;
+				font-family:		roman;
+				font-size:			14px;
+				font-weight:		bold;
+				color:				#ffffff;
+				padding:			5px;
+				width:				200px;
+				word-wrap:			break-word;
 			}
 			.feedtoggle
 			{
-				background: #aa0000;
-				font-family: roman;
-				font-size:14px;
-				font-weight: bold;
-				color:#ffffff;
-				padding: 0px;
+				background:			#aa0000;
+				font-family:		roman;
+				font-size:			14px;
+				font-weight:		bold;
+				color:				#ffffff;
+				padding:			0px;
+			}
+			a
+			{
+				color:				#ffffff;
+				text-decoration:	none;
+				font-family:		roman;
+				font-size:			14px;
+				font-weight:		bold;
 			}
 			.feeds
 			{
-				border: solid 1px #ccc;
-				font-family: roman;
-				font-size:13px;
-				padding: 3px;
+				border:				solid 1px #ccc;
+				font-family:		roman;
+				font-size:			13px;
+				padding:			3px;
 			}
 			.oddfeeds
 			{
-				background: #eeeeee;
+				background:			#eeeeee;
 			}
 		</style>
 		
@@ -99,7 +107,7 @@
 		<table id="twittertable" class="feedtitle" width="200">
 		<tr>
 		<td id="twittertitle" width="190"></td>
-		<td id="twitterfeedtoggle" class="feedtoggle" onmousedown="togglevisibility('twitterfeed')" width="10">-</td>
+		<td class="feedtoggle" width="10"><a id="twitterfeedtoggle" href="" onmousedown="togglevisibility('twitterfeed')">-</a></td>
 		</tr>
 		</table>
 		<div id="twitterfeed" class="feeds"></div>
