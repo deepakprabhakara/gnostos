@@ -57,11 +57,17 @@ function get_friendfeed(email, name) {
 		
 		response.addListener("end", function() {
 			var friendfeed = body;
-			sys.puts(friendfeed);
-			if(friendfeed.length > 0) {
-				friendfeed_emitter.emit("friendfeed", friendfeed);
+			sys.puts("END:"+friendfeed);
+			if(friendfeed.length <= 0) {
+				friendfeed = "No data found";
 			}
+			friendfeed_emitter.emit("friendfeed", friendfeed);
 		});
+		
+		response.addListener("error", function() {
+			sys.puts("ERROR:get_friendfeed");
+		});
+		
 	});
 	
 	request.close();

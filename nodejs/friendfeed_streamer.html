@@ -35,12 +35,14 @@
 				border: solid 1px #ccc;			
 				font-family: arial,sans-serif;
 				font-size:15px;
+				padding: 5px;
 			}
 			.feeds
 			{
 				border: solid 1px #ccc;
 				font-family: arial,sans-serif;
 				font-size:14px;
+				padding: 2px;
 			}
 			
 		</style>
@@ -53,7 +55,7 @@
 		<table>
 			<tr>
 				<td width="75">
-					<img width="75" id="profileimage"/>
+					<img width="75" id="profileimage" alt="Profile Image"/>
 				</td>
 				
 				<td id="accountname" class="accountname" width="125">
@@ -78,6 +80,9 @@
 				
 		function load_tweets() {
 			var twittertitle = document.getElementById('twittertitle');
+			var profileimage = document.getElementById('profileimage');
+			profileimage.style.display = 'none';
+			
 			twittertitle.innerHTML = "Looking up " + emailid + "...";
 			if (window.XMLHttpRequest)
 			{
@@ -93,14 +98,25 @@
 
 		function onXHRLoad(e)
 		{
+		    var xmlDoc = this.responseXML;
+		    if(!xmlDoc)
+		    {
+		    	twittertitle.innerHTML = "Could not fetch contact information, please try again later!";
+		    	return;
+		    }
+			
+			//alert(this.responseText);
 		    var twitterfeed = document.getElementById('twitterfeed');
 		    var profileimage = document.getElementById('profileimage');
+		    profileimage.style.display = '';
+		    
 		    var twittertitle = document.getElementById('twittertitle');
+
+		    twittertitle.innerHTML = "";
 		    
 		    var accountname = document.getElementById('accountname');
 		    var accountemail = document.getElementById('accountemail');
-		    
-		    var xmlDoc = this.responseXML;
+		    			    
 		    var titleElements = xmlDoc.getElementsByTagName("title");
 		    var nicknameElements = xmlDoc.getElementsByTagName("nickname");
 		    var nameElements = xmlDoc.getElementsByTagName("name");
@@ -121,6 +137,13 @@
 
 		function onXHRError(e)
 		{
+			//alert("error");
+		    var twittertitle = document.getElementById('twittertitle');
+		    var profileimage = document.getElementById('profileimage');
+		    profileimage.style.display = 'none';
+
+		    twittertitle.innerHTML = "Could not connect!";
+			
 		}
 				
 		//setTimeout(load_tweets, 1000);
