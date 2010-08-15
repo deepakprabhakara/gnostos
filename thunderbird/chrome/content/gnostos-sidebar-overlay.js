@@ -25,7 +25,7 @@ gnostos.onMessagePaneLoad = function()
 
 	gnostos.mSideBar = document.getElementById (gConstants.gnostosSideBarId);
 	gnostos.mSideBar.width = gConstants.sidebarWidth;
-	gnostos.mSideBar.maxwidth = window.innerWidth / 4;
+	gnostos.mSideBar.maxwidth = 0;//window.innerWidth / 4;
 
 	if(gnostos.mSideBar && gnostos.mSideBar.collapsed == false)
 	{
@@ -49,6 +49,7 @@ gnostos.onMessagePaneLoad = function()
 
 	if(gnostos.mSideBar && gnostos.mSideBar.collapsed == false)
 	{
+		gnostos.mSideBar.maxwidth = gConstants.sidebarWidth;
 		gDebugger.log("friendfeed_streamer.html");
 		//gnostos.mSideBar.setAttribute('src', "http://localhost/user?emails="+emailAddress+"&format=xml");
 		gnostos.mSideBar.setAttribute('src', "http://localhost:8080/friendfeed_streamer.html?email="+gnostos.mEmailAddress+"&name="+gnostos.mDisplayName);

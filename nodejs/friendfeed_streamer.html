@@ -2,14 +2,68 @@
 <html>
 	<head>
 		<title>Gnostos</title>
+
+		<style type="text/css">
+			body
+			{
+				position:absolute;
+				width:200px;
+				overflow-x:hidden;
+				overflow-y:auto;
+				border:0;
+				word-wrap: break-word;			
+				background-color:#ffffff;
+			}
+			.accountname
+			{
+				position:absolute;
+				width:125px;
+				overflow-x:hidden;
+				overflow-y:auto;			
+				font-family: arial,sans-serif;
+				font-size: 16px;
+				font-weight: bold;
+			}
+			.accountemail
+			{
+				font-family: arial,sans-serif;
+				font-size:14px;
+			}
+			.feedtitle
+			{
+				background: #ededed;
+				border: solid 1px #ccc;			
+				font-family: arial,sans-serif;
+				font-size:15px;
+			}
+			.feeds
+			{
+				border: solid 1px #ccc;
+				font-family: arial,sans-serif;
+				font-size:14px;
+			}
+			
+		</style>
+		
 		<script type="text/javascript">
 		// INSERT EMAILID/USERNAME HERE
 		</script>
 	</head>
-	<body>
-		<img id="profileimage"/>
-		<li id="twittertitle" onmousedown="togglevisibility('twitterfeed')"></li>
-		<div id="twitterfeed"></div>
+	<body width="200">
+		<table>
+			<tr>
+				<td width="75">
+					<img width="75" id="profileimage"/>
+				</td>
+				
+				<td id="accountname" class="accountname" width="125">
+				</td>
+			</tr>
+		</table>
+
+		<div id="accountemail" class="accountemail"></div>
+		<div id="twittertitle" class="feedtitle" onmousedown="togglevisibility('twitterfeed')"></div>
+		<div id="twitterfeed" class="feeds"></div>
 		<script type="text/javascript">
 
 		function togglevisibility(obj) {
@@ -28,7 +82,7 @@
 			if (window.XMLHttpRequest)
 			{
 				var xmlhttp=new XMLHttpRequest();
-				xmlhttp.open("GET","/stream?email="+emailid+"&user="+username,true);
+				xmlhttp.open("GET","/stream?email="+emailid+"&name="+username,true);
 				//xmlhttp.onprogress = onXHRProgress;
 				xmlhttp.onload = onXHRLoad;
 				xmlhttp.onerror = onXHRError;
@@ -43,16 +97,24 @@
 		    var profileimage = document.getElementById('profileimage');
 		    var twittertitle = document.getElementById('twittertitle');
 		    
+		    var accountname = document.getElementById('accountname');
+		    var accountemail = document.getElementById('accountemail');
+		    
 		    var xmlDoc = this.responseXML;
 		    var titleElements = xmlDoc.getElementsByTagName("title");
 		    var nicknameElements = xmlDoc.getElementsByTagName("nickname");
+		    var nameElements = xmlDoc.getElementsByTagName("name");
 		   		   
 			var feed = "";
 		    for(var i = 0; i < titleElements.length; ++i)
 		    {
-		        feed += "<li>" + titleElements[i].childNodes[0].nodeValue + "</li>";
+		        feed += "<div>" + titleElements[i].childNodes[0].nodeValue + "</div>";
 		    }
-		    profileimage.setAttribute("src", "http://friendfeed-api.com/v2/picture/" + nicknameElements[0].childNodes[0].nodeValue + "?size=medium");
+		    //http://api.twitter.com/1/users/profile_image/deepakprab
+		    if(nicknameElements[0] && nicknameElements[0].childNodes[0].nodeValue)
+		    	profileimage.setAttribute("src", "http://friendfeed-api.com/v2/picture/" + nicknameElements[0].childNodes[0].nodeValue + "?size=large");
+		    accountname.innerHTML = username;//nameElements[0].childNodes[0].nodeValue;
+		    accountemail.innerHTML = emailid;
 		    twittertitle.innerHTML = "Twitter";
 		    twitterfeed.innerHTML = feed;
 		}

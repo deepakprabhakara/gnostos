@@ -19,10 +19,10 @@
 		        	id="gnostossidebar"
 		        	type="content-primary"
 		    	    src="about:blank"
-		    	    width="200"
+		    	    width="210"
 		    	    scrolling="no"
-			        frameborder="0"
-					insertafter="gnostossidebarsplitter">
+		    	    frameborder="0"
+		    	    insertafter="gnostossidebarsplitter">
 			</iframe>
 		</div>
 	</hbox>

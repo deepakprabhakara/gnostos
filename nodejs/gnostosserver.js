@@ -76,7 +76,7 @@ http.createServer(function(request, response) {
 		var emailid = requrlparsed.query.email;
 		var username = requrlparsed.query.name;
 
-		if(!username)
+		if(username == null)
 			username = "";
 		
 		sys.puts("stream: "+ emailid);
@@ -110,7 +110,7 @@ http.createServer(function(request, response) {
 		var emailid = requrlparsed.query.email;
 		var username = requrlparsed.query.name;
 		
-		if(!username)
+		if(username == null)
 			username = "";
 				
 		sys.puts("friendfeed_streamer: "+ emailid);

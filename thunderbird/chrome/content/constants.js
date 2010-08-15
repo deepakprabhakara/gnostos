@@ -1,6 +1,6 @@
 var gConstants =
 {
-  sidebarWidth: 200,
+  sidebarWidth: 210,
   gnostosSideBarSplitterId : 'gnostossidebarsplitter',
   gnostosSideBarId: 'gnostossidebar',
   debug: true
