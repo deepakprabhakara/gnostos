@@ -55,9 +55,15 @@
 				padding:			5px;
 				width:				200px;
 			}
+			.twitterimage
+			{
+				padding:			0px;
+				vertical-align:		middle;
+				width:				16px;
+			}
 			.feedtitle
 			{
-				width:				190px;
+				width:				174px;
 				padding:			0px;
 				word-wrap:			break-word;
 			}
@@ -114,6 +120,9 @@
 		<div id="accountemail" class="accountemail"></div>
 		<table id="twittertable" class="twittertable" width="200">
 		<tr>
+		<td width="16">
+			<img class="twitterimage" width="16" id="twitterimage" alt="T"/>
+		</td>
 		<td id="twittertitle" class="feedtitle"></td>
 		<td class="feedtoggle" onmouseover="feedtogglemouseover()" onmouseout="feedtogglemouseout()"><a id="twitterfeedtoggle" width="10" href="" onmousedown="togglevisibility('twitterfeed')">-</a></td>
 		</tr>
@@ -191,6 +200,7 @@
 		    			    
 		    var titleElements = xmlDoc.getElementsByTagName("title");
 		    var nicknameElements = xmlDoc.getElementsByTagName("nickname");
+		    var iconUrlElements = xmlDoc.getElementsByTagName("iconUrl");
 		    //var nameElements = xmlDoc.getElementsByTagName("name");
 			if(nicknameElements[0] == null)
 			{
@@ -215,6 +225,10 @@
 		    if(nicknameElements[0] && nicknameElements[0].childNodes[0].nodeValue)
 		    	profileimage.setAttribute("src", "http://friendfeed-api.com/v2/picture/" + nicknameElements[0].childNodes[0].nodeValue + "?size=large");
 
+			var twitterimage = document.getElementById('twitterimage');
+		    if(iconUrlElements[0] && iconUrlElements[0].childNodes[0].nodeValue)
+		    	twitterimage.setAttribute("src", iconUrlElements[0].childNodes[0].nodeValue);
+		    
 			var twitterfeed = document.getElementById('twitterfeed');
 			twitterfeed.style.display = '';
 			twittertable.style.display = '';

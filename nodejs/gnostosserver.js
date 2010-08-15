@@ -49,7 +49,7 @@ var friendfeed_emitter = new events.EventEmitter();
 function get_friendfeed(email, name) {
 	debuglog("get_friendfeed");
 	var friendfeed_client = http.createClient(80, "friendfeed.com");
-	var request = friendfeed_client.request("GET", "/api/feed/user?emails="+email+"&format=xml&num=2", {"host": "friendfeed.com"});
+	var request = friendfeed_client.request("GET", "/api/feed/user?emails="+email+"&format=xml&service=twitter&num=2", {"host": "friendfeed.com"});
 
 	request.socket.addListener('error', function(connectionException){
 		debuglog("get_friendfeed.request.socket.addListener.'error'");
