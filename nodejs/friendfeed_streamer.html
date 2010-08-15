@@ -11,7 +11,7 @@
 				overflow-x:hidden;
 				overflow-y:auto;
 				border:0;
-				word-wrap: break-word;			
+				word-wrap: break-word;	
 				background-color:#ffffff;
 			}
 			.profileimage
@@ -36,15 +36,34 @@
 				padding-bottom:2px;
 				vertical-align:text-top;
 			}
+			.infodialog
+			{
+				background: #aa0000;			
+				font-family: roman;
+				font-size:14px;
+				color:#ffffff;
+				padding: 5px;
+				word-wrap: break-word;
+			}
 			.feedtitle
 			{
-				background: #aa0000;
-				border: solid 1px #ccc;			
+				background: #aa0000;			
 				font-family: roman;
 				font-size:14px;
 				font-weight: bold;
 				color:#ffffff;
 				padding: 5px;
+				width:200px;
+				word-wrap: break-word;
+			}
+			.feedtoggle
+			{
+				background: #aa0000;
+				font-family: roman;
+				font-size:14px;
+				font-weight: bold;
+				color:#ffffff;
+				padding: 0px;
 			}
 			.feeds
 			{
@@ -75,29 +94,42 @@
 			</tr>
 		</table>
 
+		<div id="infodialog" class="infodialog"></div>
 		<div id="accountemail" class="accountemail"></div>
-		<div id="twittertitle" class="feedtitle" onmousedown="togglevisibility('twitterfeed')"></div>
+		<table id="twittertable" class="feedtitle" width="200">
+		<tr>
+		<td id="twittertitle" width="190"></td>
+		<td id="twitterfeedtoggle" class="feedtoggle" onmousedown="togglevisibility('twitterfeed')" width="10">-</td>
+		</tr>
+		</table>
 		<div id="twitterfeed" class="feeds"></div>
+		
 		<script type="text/javascript">
 
 		function togglevisibility(obj) {
 			var el = document.getElementById(obj);
+			var twitterfeedtoggle = document.getElementById('twitterfeedtoggle');
 			if ( el.style.display != 'none' ) {
 				el.style.display = 'none';
+				twitterfeedtoggle.innerHTML = "+";
 			}
 			else {
 				el.style.display = '';
+				twitterfeedtoggle.innerHTML = "-";
 			}
 		}
 				
 		function load_tweets() {
-			var twittertitle = document.getElementById('twittertitle');
+			var infodialog = document.getElementById('infodialog');
+			var twittertable = document.getElementById('twittertable');
+			twittertable.style.display = 'none';
 			var twitterfeed = document.getElementById('twitterfeed');
 			twitterfeed.style.display = 'none';
+			
 			var profileimage = document.getElementById('profileimage');
 			profileimage.style.display = 'none';
-			
-			twittertitle.innerHTML = "Looking up " + emailid + "...";
+
+			infodialog.innerHTML = "Looking up " + emailid + "...";
 			if (window.XMLHttpRequest)
 			{
 				var xmlhttp=new XMLHttpRequest();
@@ -114,15 +146,15 @@
 		{
 			//alert(this.responseText);
 		    var xmlDoc = this.responseXML;
+		    var twittertable = document.getElementById('twittertable');
 		    var twittertitle = document.getElementById('twittertitle');
+		    var infodialog = document.getElementById('infodialog');
 		    
 		    if(!xmlDoc || this.responseText == "No data found")
 		    {
-		    	twittertitle.innerHTML = "Could not fetch contact information, please try again later!";
+		    	infodialog.innerHTML = "Could not fetch contact information, please try again later!";
 		    	return;
 		    }
-
-		    twittertitle.innerHTML = "";
 		    
 		    var twitterfeed = document.getElementById('twitterfeed');
 		    var profileimage = document.getElementById('profileimage');
@@ -137,10 +169,13 @@
 			if(nicknameElements[0] == null)
 			{
 				profileimage.style.display = 'none';
-		    	twittertitle.innerHTML = "Contact is not registered on FriendFeed!";
+				infodialog.innerHTML = "Contact is not registered on FriendFeed!";
 		    	return;
 			}
-				
+
+		    infodialog.innerHTML = "";
+		    infodialog.style.display = 'none';
+
 			var feed = "";
 		    for(var i = 0; i < titleElements.length; ++i)
 		    {
@@ -156,6 +191,7 @@
 
 			var twitterfeed = document.getElementById('twitterfeed');
 			twitterfeed.style.display = '';
+			twittertable.style.display = '';
 	    	
 		    accountname.innerHTML = username;
 		    accountemail.innerHTML = emailid;
