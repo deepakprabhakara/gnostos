@@ -45,7 +45,7 @@
 				padding:			5px;
 				word-wrap:			break-word;
 			}
-			.feedtitle
+			.twittertable
 			{
 				background:			#aa0000;
 				font-family:		roman;
@@ -54,17 +54,23 @@
 				color:				#ffffff;
 				padding:			5px;
 				width:				200px;
+			}
+			.feedtitle
+			{
+				width:				190px;
+				padding:			0px;
 				word-wrap:			break-word;
 			}
 			.feedtoggle
 			{
-				background:			#aa0000;
-				font-family:		roman;
-				font-size:			14px;
-				font-weight:		bold;
-				color:				#ffffff;
+				width:				10px;
 				padding:			0px;
 			}
+			.feedtoggle:hover
+			{
+				background:			#ffffff;
+				color:				#aa0000;
+			} 
 			a
 			{
 				color:				#ffffff;
@@ -72,6 +78,8 @@
 				font-family:		roman;
 				font-size:			14px;
 				font-weight:		bold;
+				outline:			none;
+				text-align:			center;
 			}
 			.feeds
 			{
@@ -104,16 +112,26 @@
 
 		<div id="infodialog" class="infodialog"></div>
 		<div id="accountemail" class="accountemail"></div>
-		<table id="twittertable" class="feedtitle" width="200">
+		<table id="twittertable" class="twittertable" width="200">
 		<tr>
-		<td id="twittertitle" width="190"></td>
-		<td class="feedtoggle" width="10"><a id="twitterfeedtoggle" href="" onmousedown="togglevisibility('twitterfeed')">-</a></td>
+		<td id="twittertitle" class="feedtitle"></td>
+		<td class="feedtoggle" onmouseover="feedtogglemouseover()" onmouseout="feedtogglemouseout()"><a id="twitterfeedtoggle" width="10" href="" onmousedown="togglevisibility('twitterfeed')">-</a></td>
 		</tr>
 		</table>
 		<div id="twitterfeed" class="feeds"></div>
 		
 		<script type="text/javascript">
 
+		function feedtogglemouseover() {
+			var twitterfeedtoggle = document.getElementById('twitterfeedtoggle');
+			twitterfeedtoggle.style.color = "#aa0000";
+		}
+
+		function feedtogglemouseout() {
+			var twitterfeedtoggle = document.getElementById('twitterfeedtoggle');
+			twitterfeedtoggle.style.color = "#ffffff";
+		}
+		
 		function togglevisibility(obj) {
 			var el = document.getElementById(obj);
 			var twitterfeedtoggle = document.getElementById('twitterfeedtoggle');
