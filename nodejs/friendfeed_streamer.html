@@ -98,22 +98,22 @@
 
 		function onXHRLoad(e)
 		{
+			//alert(this.responseText);
 		    var xmlDoc = this.responseXML;
-		    if(!xmlDoc)
+		    var twittertitle = document.getElementById('twittertitle');
+		    
+		    if(!xmlDoc || this.responseText == "No data found")
 		    {
 		    	twittertitle.innerHTML = "Could not fetch contact information, please try again later!";
 		    	return;
 		    }
-			
-			//alert(this.responseText);
-		    var twitterfeed = document.getElementById('twitterfeed');
-		    var profileimage = document.getElementById('profileimage');
-		    profileimage.style.display = '';
-		    
-		    var twittertitle = document.getElementById('twittertitle');
 
 		    twittertitle.innerHTML = "";
 		    
+		    var twitterfeed = document.getElementById('twitterfeed');
+		    var profileimage = document.getElementById('profileimage');
+		    profileimage.style.display = '';
+		    		    
 		    var accountname = document.getElementById('accountname');
 		    var accountemail = document.getElementById('accountemail');
 		    			    

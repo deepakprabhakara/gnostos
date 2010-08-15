@@ -46,7 +46,7 @@ function load_static_file(uri, response, emailid, username) {
 var friendfeed_emitter = new events.EventEmitter();
 
 function get_friendfeed(email, name) {
-	var friendfeed_client = http.createClient(80, "friendfeed.com");	
+	var friendfeed_client = http.createClient(80, "friendfeed.com");
 	var request = friendfeed_client.request("GET", "/api/feed/user?emails="+email+"&format=xml&num=2", {"host": "friendfeed.com"});
 	
 	request.addListener("response", function(response) {
@@ -63,11 +63,12 @@ function get_friendfeed(email, name) {
 			}
 			friendfeed_emitter.emit("friendfeed", friendfeed);
 		});
-		
-		response.addListener("error", function() {
-			sys.puts("ERROR:get_friendfeed");
-		});
-		
+				
+	});
+	
+	request.socket.addListener('error', function(socketException){
+		friendfeed_emitter.emit("friendfeed", "No data found");
+        sys.log(socketException);
 	});
 	
 	request.close();
@@ -96,6 +97,8 @@ http.createServer(function(request, response) {
 			response.close();
 			
 			clearTimeout(timeout);
+			
+			friendfeed_emitter.removeListener("friendfeed", friendfeed_listener);
 		}; 
 		
 		friendfeed_emitter.addListener("friendfeed", friendfeed_listener);
