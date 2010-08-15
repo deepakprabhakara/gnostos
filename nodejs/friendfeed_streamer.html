@@ -14,38 +14,49 @@
 				word-wrap: break-word;			
 				background-color:#ffffff;
 			}
+			.profileimage
+			{
+				padding: 0px;
+				vertical-align:middle;
+			}
 			.accountname
 			{
 				position:absolute;
 				width:125px;
 				overflow-x:hidden;
 				overflow-y:auto;			
-				font-family: arial,sans-serif;
+				font-family: roman;
 				font-size: 16px;
 				font-weight: bold;
 			}
 			.accountemail
 			{
-				font-family: arial,sans-serif;
-				font-size:13px;
-				padding: 4px;
+				font-family: roman;
+				font-size:12px;
+				padding-bottom:2px;
+				vertical-align:text-top;
 			}
 			.feedtitle
 			{
-				background: #ededed;
+				background: #aa0000;
 				border: solid 1px #ccc;			
-				font-family: arial,sans-serif;
-				font-size:15px;
+				font-family: roman;
+				font-size:14px;
+				font-weight: bold;
+				color:#ffffff;
 				padding: 5px;
 			}
 			.feeds
 			{
 				border: solid 1px #ccc;
-				font-family: arial,sans-serif;
-				font-size:14px;
-				padding: 2px;
+				font-family: roman;
+				font-size:13px;
+				padding: 3px;
 			}
-			
+			.oddfeeds
+			{
+				background: #eeeeee;
+			}
 		</style>
 		
 		<script type="text/javascript">
@@ -56,7 +67,7 @@
 		<table>
 			<tr>
 				<td width="75">
-					<img width="75" id="profileimage" alt="Profile Image"/>
+					<img class="profileimage" width="75" id="profileimage" alt="Profile Image"/>
 				</td>
 				
 				<td id="accountname" class="accountname" width="125">
@@ -133,7 +144,11 @@
 			var feed = "";
 		    for(var i = 0; i < titleElements.length; ++i)
 		    {
-		        feed += "<div>" + titleElements[i].childNodes[0].nodeValue + "</div>";
+			    if(i % 2 == 1)
+				    feed += "<div class=\"oddfeeds\">";
+				else
+					feed += "<div>";
+		        feed += titleElements[i].childNodes[0].nodeValue + "</div>";
 		    }
 		    //http://api.twitter.com/1/users/profile_image/deepakprab
 		    if(nicknameElements[0] && nicknameElements[0].childNodes[0].nodeValue)
